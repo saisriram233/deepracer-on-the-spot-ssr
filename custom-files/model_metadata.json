@@ -85,7 +85,7 @@
         {
             "steering_angle": -30.0,
             "speed": 1.1
-        },
+        }
     ],
     "sensor": ["FRONT_FACING_CAMERA"],
     "neural_network": "DEEP_CONVOLUTIONAL_NETWORK",

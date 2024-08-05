@@ -1,4 +1,4 @@
-def reward_function(params)
+def reward_function(params):
     
     # Read input parameters
     track_width = params['track_width']
@@ -29,3 +29,4 @@ def reward_function(params)
         reward = 1e-3
     
     return float(reward)    
+

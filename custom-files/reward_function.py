@@ -3,6 +3,7 @@ def reward_function(params)
     # Read input parameters
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
+    progress = params['progress']
     
     # Calculate 3 markers that are at varying distances away from the center line
     marker_1 = 0.1 * track_width

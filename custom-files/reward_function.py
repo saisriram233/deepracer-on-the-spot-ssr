@@ -1,4 +1,6 @@
 import math
+
+
 class Reward:
     def __init__(self, verbose=False):
         self.first_racingpoint_index = 0
@@ -35,7 +37,7 @@ class Reward:
             return [closest_index, second_closest_index]
 
         def dist_to_racing_line(closest_coords, second_closest_coords, car_coords):
-
+            
             # Calculate the distances between 2 closest racing points
             a = abs(dist_2_points(x1=closest_coords[0],
                                   x2=second_closest_coords[0],
@@ -112,7 +114,7 @@ class Reward:
 
             return direction_diff
 
-        # Gives back indexes that lie between start and end index of a cyclical list
+        # Gives back indexes that lie between start and end index of a cyclical list 
         # (start index is included, end index is not)
         def indexes_cyclical(start, end, array_len):
 
@@ -316,10 +318,9 @@ class Reward:
                         [7.63874, 2.5824, 1.63729, 0.11788],
                         [7.45597, 2.67272, 1.86521, 0.1093],
                         [7.25555, 2.7493, 2.13325, 0.10058],
-                        [7.04052, 2.81339, 2.42132, 0.09267]],
+                        [7.04052, 2.81339, 2.42132, 0.09267]]
 
-
-         ################## INPUT PARAMETERS ###################
+        ################## INPUT PARAMETERS ###################
 
         # Read all input parameters
         all_wheels_on_track = params['all_wheels_on_track']
@@ -377,9 +378,9 @@ class Reward:
         reward += speed_reward * SPEED_MULTIPLE
 
         # Reward if less steps
-        REWARD_PER_STEP_FOR_FASTEST_TIME = 1
-        STANDARD_TIME = 20
-        FASTEST_TIME = 15
+        REWARD_PER_STEP_FOR_FASTEST_TIME = 1 
+        STANDARD_TIME = 37
+        FASTEST_TIME = 27
         times_list = [row[3] for row in racing_track]
         projected_time = projected_time(self.first_racingpoint_index, closest_index, steps, times_list)
         try:
@@ -394,17 +395,17 @@ class Reward:
         # Zero reward if obviously wrong direction (e.g. spin)
         direction_diff = racing_direction_diff(
             optimals[0:2], optimals_second[0:2], [x, y], heading)
-        if direction_diff > 25:
+        if direction_diff > 30:
             reward = 1e-3
-
+            
         # Zero reward of obviously too slow
         speed_diff_zero = optimals[2]-speed
         if speed_diff_zero > 0.5:
             reward = 1e-3
-
+            
         ## Incentive for finishing the lap in less steps ##
         REWARD_FOR_FASTEST_TIME = 1500 # should be adapted to track length and other rewards
-        STANDARD_TIME = 25 # seconds (time that is easily done by model)
+        STANDARD_TIME = 25  # seconds (time that is easily done by model)
         FASTEST_TIME = 17  # seconds (best time of 1st place on the track)
         if progress == 100:
             finish_reward = max(1e-3, (-REWARD_FOR_FASTEST_TIME /
@@ -412,13 +413,13 @@ class Reward:
         else:
             finish_reward = 0
         reward += finish_reward
-
+        
         ## Zero reward if off track ##
-        if is_offtrack:
+        if all_wheels_on_track == False:
             reward = 1e-3
 
         ####################### VERBOSE #######################
-
+        
         if self.verbose == True:
             print("Closest index: %i" % closest_index)
             print("Distance to racing line: %f" % dist)
@@ -430,14 +431,14 @@ class Reward:
             print("Predicted time: %f" % projected_time)
             print("=== Steps reward: %f ===" % steps_reward)
             print("=== Finish reward: %f ===" % finish_reward)
-
+            
         #################### RETURN REWARD ####################
-
+        
         # Always return a float value
         return float(reward)
 
 
-reward_object = Reward(verbose = True) # add parameter verbose=True to get noisy output for testing
+reward_object = Reward() # add parameter verbose=True to get noisy output for testing
 
 
 def reward_function(params):
